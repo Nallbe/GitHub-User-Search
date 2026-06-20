@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 type SearchFormProps = {
   username: string,
   setUsername: React.Dispatch<React.SetStateAction<string>>;
+  handleSearch: () => void;
 }
 
 function SearchForm(props: SearchFormProps) {
@@ -16,7 +17,8 @@ function SearchForm(props: SearchFormProps) {
 
   const {
     username,
-    setUsername
+    setUsername,
+    handleSearch
   } = props
 
 
@@ -31,6 +33,7 @@ function SearchForm(props: SearchFormProps) {
         alignItems: "center",
         justifyContent: "center",
         mt: 5,
+        mb: 5,
         gap: 1
       }}>
       <TextField
@@ -38,9 +41,15 @@ function SearchForm(props: SearchFormProps) {
         label="Имя пользователя"
         value={username}
         onChange={inputHandleChange}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleSearch();
+          }
+        }}
       >
       </TextField>
-      <Button 
+      <Button
+        onClick={handleSearch}
         size="medium"
         variant="contained"
         >
