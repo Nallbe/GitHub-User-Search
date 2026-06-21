@@ -4,6 +4,7 @@ import type { GitHubUser } from './types/github.ts';
 
 import Header from './components/Header.tsx';
 import SearchForm from './components/SearchForm';
+import UserCard from './components/UserCard.tsx';
 
 import Box from "@mui/material/Box";
 
@@ -13,13 +14,10 @@ function App() {
   const [username, setUsername] = useState("");
 
   const [user, setUser] = useState <GitHubUser | null>(null);
+  const [repos, setRepos] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-
-  // useEffect(() => {
-  //   console.log(username);
-  // }, [username])
 
 
   async function handleSearch() {
@@ -28,6 +26,7 @@ function App() {
     setLoading(true);
     setError("");
     setUser(null);
+    setRepos(null);
 
     try {
       const response = await fetch(
@@ -37,7 +36,7 @@ function App() {
       const data: GitHubUser = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Ошибка при запуске пользователя");
+        throw new Error(data.message || "Ошибка при загрузке пользователя");
       }
 
       setUser(data);
@@ -50,6 +49,8 @@ function App() {
       }
     } finally {
       setLoading(false);
+    }
+
     }
   }
 
@@ -75,16 +76,7 @@ function App() {
       </SearchForm>
       {loading && <p>Загрузка...</p>}
       {error && <p>{error}</p>}
-      {user && (
-        <div>
-          <img src={user.avatar_url} width={120} />
-          <h2>{user.login}</h2>
-          <p>Name: {user.name}</p>
-          <p>Bio: {user.bio}</p>
-          <p>Repos: {user.public_repos}</p>
-          <p>Followers: {user.followers}</p>
-        </div>
-      )}
+      {user && <UserCard user={user} />}
     </Box>
   )
 }

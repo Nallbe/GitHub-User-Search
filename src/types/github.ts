@@ -9,3 +9,12 @@ export type GitHubUser = {
   html_url: string;
   message: string;
 };
+
+export type GitHubRepo = {
+  id: number;
+  name: string;
+  url: string;
+  description: string | null;
+  language: string | null;
+  stargazers_count: number;
+};
