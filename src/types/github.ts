@@ -13,8 +13,9 @@ export type GitHubUser = {
 export type GitHubRepo = {
   id: number;
   name: string;
-  url: string;
+  html_url: string;
   description: string | null;
   language: string | null;
   stargazers_count: number;
+  message: string;
 };
