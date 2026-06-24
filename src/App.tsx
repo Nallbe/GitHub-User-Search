@@ -7,7 +7,10 @@ import SearchForm from './components/SearchForm';
 import UserCard from './components/UserCard.tsx';
 import UserRepository from './components/UserRepository.tsx';
 
+import { fetchGitHubUser, fetchGitHubRepos } from "./services/githubApi";
+
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 
 function App() {
@@ -23,7 +26,8 @@ function App() {
 
 
   async function handleSearch() {
-    if (!username.trim()) return;
+    const trimmedUsername = username.trim();
+    if (!trimmedUsername) return;
 
     setLoading(true);
     setError("");
@@ -31,43 +35,22 @@ function App() {
     setRepos([]);
 
     try {
-      const response = await fetch(
-        `https://api.github.com/users/${username.trim()}`
-      );
-      
-      const data: GitHubUser = await response.json();
+      const userData = await fetchGitHubUser(trimmedUsername);
+      const reposData = await fetchGitHubRepos(trimmedUsername);
 
-      if (!response.ok) {
-        throw new Error(data.message || "Ошибка при загрузке пользователя");
-      }
-
-
-
-      const responseRepos = await fetch(
-        `https://api.github.com/users/${username.trim()}/repos`
-      );
-      const dataResponse: GitHubRepo[] = await responseRepos.json();
-
-      if (!responseRepos.ok) {
-        throw new Error("Ошибка при загрузке репозиториев");
-      }
-
-      setUser(data);
-      setRepos(dataResponse);
+      setUser(userData);
+      setRepos(reposData);
 
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
-      }
-      else {
+      } else {
         setError("Неизвестная ошибка");
       }
     } finally {
       setLoading(false);
     }
   }
-
-
 
 
   return (
@@ -109,6 +92,13 @@ function App() {
           />
           ))}
       </Box> : null}
+
+      {user && repos.length === 0 && !loading ? <Typography sx={{
+         mt: 5,
+       }}>
+          У пользователя нет репозиториев
+        </Typography> : null}
+       
     </Box>
   )
 }
