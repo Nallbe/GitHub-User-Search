@@ -1,16 +1,15 @@
 import { useState } from 'react';
 
 import type { GitHubUser, GitHubRepo } from './types/github.ts';
-
-import Header from './components/Header.tsx';
-import SearchForm from './components/SearchForm';
-import UserCard from './components/UserCard.tsx';
-import UserRepository from './components/UserRepository.tsx';
-
 import { fetchGitHubUser, fetchGitHubRepos } from "./services/githubApi";
 
+import Header from './components/Header.tsx';
+import SearchForm from './components/SearchForm.tsx';
+import UserCard from './components/UserCard.tsx';
+
+import RepoList from './components/RepoList.tsx';
+
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 
 
 function App() {
@@ -54,53 +53,26 @@ function App() {
 
 
   return (
-    <Box  
+    <Box
       sx={{
         display: "flex",
         justifyContent: "center",
         flexDirection: "column",
         alignItems: "center"
-      }}
-    >
-      <Header></Header>
+      }}>
+      <Header/>
       <SearchForm
         username={username}
         setUsername={setUsername}
         handleSearch={handleSearch}
-        
-      >
-      </SearchForm>
+      />
       {loading && <p>Загрузка...</p>}
       {error && <p>{error}</p>}
       {user && <UserCard user={user} />}
-
-      {repos.length > 0 ? <Box
-        sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "center",
-          gap: 3,
-          mt: 4,
-          width: "100%",
-          maxWidth: "1400px"
-        }}>
-
-        {repos.map(rep => (
-          <UserRepository
-            key={rep.id} 
-            rep={rep}
-          />
-          ))}
-      </Box> : null}
-
-      {user && repos.length === 0 && !loading ? <Typography sx={{
-         mt: 5,
-       }}>
-          У пользователя нет репозиториев
-        </Typography> : null}
-       
+      {user && <RepoList repos={repos}/>}
     </Box>
   )
 }
 
 export default App
+
