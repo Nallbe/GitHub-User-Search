@@ -28,16 +28,16 @@ export async function fetchGitHubRepos(username: string): Promise<GitHubRepo[]> 
   return data;
 }
 
-export async function fetchGitRepoLanguages(name: string) {
-  const response = await fetch(
-    `https://api.github.com/repos/Nallbe/${name}/languages`
-  );
+export async function fetchGitRepoLanguages(names: string[]) {
+  const result = await Promise.all(names.map(async name => {
+    const response = await fetch(`https://api.github.com/repos/Nallbe/${name}/languages`);
 
-  const data = await response.json();
+    if (!response.ok) {
+      throw new Error(`Ошибка поиска языков в репозитории ${name}`);
+    }
 
-  if (!response.ok) {
-    throw new Error(data.message || "Ошибка при загрузке языков репозитория");
-  }
-
-  return data;
+    return response.json();
+  }))
+  // console.log(result)
+  return result
 }

@@ -26,8 +26,8 @@ function App() {
 
 
   useEffect(() => {
-    console.log(repos)
-  }, [repos])
+    console.log(languages)
+  }, [languages])
 
 
   async function handleSearch() {
@@ -45,9 +45,9 @@ function App() {
       const reposData = await fetchGitHubRepos(trimmedUsername);
       const reposNames = reposData.map(rep => {
         return rep.name
-      }
-      )
-      const langData = await fetchGitRepoLanguages();
+      })
+      // console.log(reposNames);
+      const langData = await fetchGitRepoLanguages(reposNames);
 
       
 

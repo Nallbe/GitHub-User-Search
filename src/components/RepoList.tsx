@@ -11,7 +11,7 @@ type RepoListProps = {
 
 function RepoList({repos} : RepoListProps) {
 
-   if (repos.length === 0) {
+  if (repos.length === 0) {
     return (
       <Typography sx={{ mt: 5 }}>
         У пользователя нет репозиториев
