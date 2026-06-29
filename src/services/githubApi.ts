@@ -27,3 +27,17 @@ export async function fetchGitHubRepos(username: string): Promise<GitHubRepo[]> 
 
   return data;
 }
+
+export async function fetchGitRepoLanguages(name: string) {
+  const response = await fetch(
+    `https://api.github.com/repos/Nallbe/${name}/languages`
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Ошибка при загрузке языков репозитория");
+  }
+
+  return data;
+}

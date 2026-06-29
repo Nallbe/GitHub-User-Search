@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import type { GitHubUser, GitHubRepo } from './types/github.ts';
-import { fetchGitHubUser, fetchGitHubRepos } from "./services/githubApi";
+import { fetchGitHubUser, fetchGitHubRepos, fetchGitRepoLanguages } from "./services/githubApi";
 
 import Header from './components/Header.tsx';
 import SearchForm from './components/SearchForm.tsx';
@@ -18,10 +18,16 @@ function App() {
 
   const [user, setUser] = useState <GitHubUser | null>(null);
   const [repos, setRepos] = useState <GitHubRepo[]>([]);
+  const [languages, setLanguages] = useState();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+
+
+  useEffect(() => {
+    console.log(repos)
+  }, [repos])
 
 
   async function handleSearch() {
@@ -32,13 +38,22 @@ function App() {
     setError("");
     setUser(null);
     setRepos([]);
-
+    
+    
     try {
       const userData = await fetchGitHubUser(trimmedUsername);
       const reposData = await fetchGitHubRepos(trimmedUsername);
+      const reposNames = reposData.map(rep => {
+        return rep.name
+      }
+      )
+      const langData = await fetchGitRepoLanguages();
+
+      
 
       setUser(userData);
       setRepos(reposData);
+      setLanguages(langData);
 
     } catch (error) {
       if (error instanceof Error) {
