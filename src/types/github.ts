@@ -18,4 +18,5 @@ export type GitHubRepo = {
   language: string | null;
   stargazers_count: number;
   message: string;
+  languages: Record<string, number>;
 };

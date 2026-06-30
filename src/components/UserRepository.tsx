@@ -1,5 +1,7 @@
 import type { GitHubRepo } from '../types/github.ts';
 
+import LanguagesLine from "./LanguagesLine.tsx";
+
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -56,8 +58,17 @@ function UserRepository({rep} : UserRepositoryProps) {
           <Box sx={{ display: "flex", gap: 2, mt: 1 }}>
             <Typography>
               Stars: {rep.stargazers_count}
-              </Typography>
-            {rep.language ? <Typography>Language: {rep.language}</Typography> : null}
+            </Typography>
+            <Box>
+              {/* <Typography>Languages: {rep.language}</Typography> */}
+              {Object.entries(rep.languages).map(([language, bytes]) => (
+                <LanguagesLine 
+                  key={language}
+                  language={language}
+                  bytes={bytes}
+                />
+              ))}
+            </Box>
           </Box>
 
           <Button
