@@ -24,9 +24,10 @@ function App() {
 
 
 
-  useEffect(() => {
-    console.log(repos);
-  }, [repos])
+  // useEffect(() => {
+  //   console.log(repos);
+
+  // }, [repos])
 
 
   async function handleSearch() {

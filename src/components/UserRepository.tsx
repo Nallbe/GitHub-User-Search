@@ -55,19 +55,18 @@ function UserRepository({rep} : UserRepositoryProps) {
             </Typography> 
           : null}
 
-          <Box sx={{ display: "flex", gap: 2, mt: 1 }}>
+          <Box sx={{ 
+            display: "flex",
+            flexDirection: "column", 
+            gap: 2, 
+            mt: 1 }}>
             <Typography>
               Stars: {rep.stargazers_count}
             </Typography>
             <Box>
-              {/* <Typography>Languages: {rep.language}</Typography> */}
-              {Object.entries(rep.languages).map(([language, bytes]) => (
-                <LanguagesLine 
-                  key={language}
-                  language={language}
-                  bytes={bytes}
-                />
-              ))}
+              {rep.languages ? <LanguagesLine 
+                languages={rep.languages}
+              /> : null}
             </Box>
           </Box>
 
